@@ -91,7 +91,7 @@
         <!-- 五欄跨部門盤查資料蒐集清單 (採購 / 廠務 / 物流 / 使用 / 廢棄) -->
         <div>
           <div class="text-xs font-semibold text-slate-700 mb-2.5 flex items-center justify-between">
-            <span>📋 解析完畢應產出之「跨部門盤查資料蒐集清單（採購／廠務／物流／使用／廢棄五欄矩陣）」：</span>
+            <span>📋 解析完畢應產出之「跨部門盤查資料蒐集清單（採購／廠務／物流／使用／廢棄五欄）」：</span>
             <span class="text-[11px] text-slate-500 font-mono">ISO 14067 Data Collection Matrix</span>
           </div>
 

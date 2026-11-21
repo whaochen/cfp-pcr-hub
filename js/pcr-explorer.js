@@ -50,103 +50,32 @@
   }
 
   function renderStatsBar() {
-    const bar = document.getElementById('explorer-stats-bar');
-    if (!bar || !metadata) return;
+    if (!metadata) return;
 
     const cfpCount = metadata.active_by_type?.['環境部 CFP-PCR'] ?? 159;
     const epdCount = metadata.active_by_type?.['產發署 EPD-PCR'] ?? 34;
     const pefCount = metadata.active_by_type?.['環境部 PEFCR'] ?? 15;
     const goodsCount = metadata.active_by_category?.goods ?? 156;
     const serviceCount = metadata.active_by_category?.service ?? 44;
-    const otherCount = metadata.active_by_category?.other ?? 8;
 
-    bar.innerHTML = `
-      <!-- 卡片 1：現行有效總數與三體系細分 -->
-      <div class="bg-white border border-teal-200 border-l-4 border-l-teal-700 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold text-slate-500">現行有效 PCR 規則</span>
-          <span class="text-xs font-mono font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200">Active</span>
-        </div>
-        <div class="my-1.5 flex items-baseline gap-2">
-          <span class="text-2xl sm:text-3xl font-bold font-mono text-teal-800">${metadata.active_count || 208}</span>
-          <span class="text-xs text-slate-500">筆（全庫共 ${metadata.total_count || 494} 筆）</span>
-        </div>
-        <div class="text-[11px] text-slate-600 flex items-center gap-2 flex-wrap pt-1.5 border-t border-slate-100">
-          <span>CFP-PCR <strong class="text-slate-900 font-mono">${cfpCount}</strong></span>
-          <span>·</span>
-          <span>EPD-PCR <strong class="text-slate-900 font-mono">${epdCount}</strong></span>
-          <span>·</span>
-          <span>PEFCR <strong class="text-slate-900 font-mono">${pefCount}</strong></span>
-        </div>
-      </div>
+    const activeEl = document.getElementById('kpi-active-count');
+    const totalEl = document.getElementById('kpi-total-count');
+    const typeEl = document.getElementById('kpi-type-split');
+    const catEl = document.getElementById('kpi-cat-split');
+    const genEl = document.getElementById('kpi-generated-at');
+    const expEl = document.getElementById('kpi-expiring-count');
 
-      <!-- 卡片 2：商品 vs 服務型分佈 -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold text-slate-500">有效規則產業屬性</span>
-          <span class="text-xs font-mono font-semibold text-sky-700">2025 雙範本對應</span>
-        </div>
-        <div class="my-1.5 flex items-baseline gap-3">
-          <div>
-            <span class="text-xl sm:text-2xl font-bold font-mono text-slate-900">${goodsCount}</span>
-            <span class="text-xs text-slate-500">商品型</span>
-          </div>
-          <span class="text-slate-300">/</span>
-          <div>
-            <span class="text-xl sm:text-2xl font-bold font-mono text-sky-700">${serviceCount}</span>
-            <span class="text-xs text-slate-500">服務型</span>
-          </div>
-          <span class="text-slate-300">/</span>
-          <div>
-            <span class="text-lg font-bold font-mono text-purple-700">${otherCount}</span>
-            <span class="text-xs text-slate-500">其他</span>
-          </div>
-        </div>
-        <div class="text-[11px] text-slate-500 pt-1.5 border-t border-slate-100">
-          支援 CCC Code 與 4 碼行業分類模糊檢索
-        </div>
-      </div>
+    if (activeEl) activeEl.textContent = `${metadata.active_count ?? 208} 筆`;
+    if (totalEl) totalEl.textContent = `總收錄 ${metadata.total_count ?? 494} 筆`;
+    if (typeEl) typeEl.textContent = `${cfpCount} / ${epdCount} / ${pefCount}`;
+    if (catEl) catEl.textContent = `${goodsCount} / ${serviceCount} 筆`;
+    if (genEl) genEl.textContent = metadata.generated_at || '2026-11-21';
+    if (expEl) expEl.textContent = String(metadata.expiring_soon_count ?? 2);
 
-      <!-- 卡片 3：即將到期與同名雙軌防呆警示 -->
-      <div class="bg-white border border-amber-200 border-l-4 border-l-amber-500 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold text-slate-500">實務防呆警示雷達</span>
-          <span class="text-xs font-mono font-semibold px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">90 天內預警</span>
-        </div>
-        <div class="my-1.5 flex items-center gap-4">
-          <button type="button" id="stat-btn-expiring" class="text-left group">
-            <span class="text-2xl font-bold font-mono text-orange-700 group-hover:underline">${metadata.expiring_soon_count || 2}</span>
-            <span class="text-xs font-medium text-orange-800 ml-1">筆即將到期</span>
-          </button>
-          <span class="text-slate-300">|</span>
-          <button type="button" id="stat-btn-dual" class="text-left group">
-            <span class="text-2xl font-bold font-mono text-amber-700 group-hover:underline">${(metadata.dual_track_items || []).length}</span>
-            <span class="text-xs font-medium text-amber-800 ml-1">組同名雙軌</span>
-          </button>
-        </div>
-        <div class="text-[11px] text-slate-600 pt-1.5 border-t border-slate-100 truncate" title="同名雙軌：鞋靴、戶外照明燈具、衣著">
-          雙軌品項：${(metadata.dual_track_items || ['鞋靴', '戶外照明燈具', '衣著']).join('、')}
-        </div>
-      </div>
-
-      <!-- 卡片 4：資料基準日與官方同步 -->
-      <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold text-slate-500">官方資料基準日</span>
-          <span class="text-xs font-mono font-semibold text-teal-700">環境部 ODT 同步</span>
-        </div>
-        <div class="my-1.5">
-          <span class="text-xl sm:text-2xl font-bold font-mono text-slate-900">${escapeHtml(metadata.generated_at || '2026-11-21')}</span>
-        </div>
-        <div class="text-[11px] text-slate-500 pt-1.5 border-t border-slate-100 flex items-center justify-between">
-          <span>歷史過期封存：${metadata.expired_count || 286} 筆</span>
-          <a href="${escapeHtml(metadata.source_url || 'https://cfp.moenv.gov.tw/Carbon/WebPage/FLPCRDoneList.aspx')}" target="_blank" rel="noopener noreferrer" class="text-teal-700 font-semibold hover:underline">環境部官網 ↗</a>
-        </div>
-      </div>
-    `;
-
-    document.getElementById('stat-btn-expiring')?.addEventListener('click', () => toggleSpecialFilter('expiring'));
-    document.getElementById('stat-btn-dual')?.addEventListener('click', () => toggleSpecialFilter('dual'));
+    document.getElementById('kpi-btn-expiring')?.addEventListener('click', () => {
+      if (typeof window.switchTab === 'function') window.switchTab('explorer');
+      toggleSpecialFilter('expiring');
+    });
   }
 
   function applyFilters() {

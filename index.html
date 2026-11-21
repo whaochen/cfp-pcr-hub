@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>[78 Pt] CFP-PCR 規則學習與解析中心｜晧脈元素庫 · Hao Element Matrix</title>
+  <title>[15 P] CFP-PCR 規則學習與解析中心｜晧脈元素庫 · Hao Element Matrix</title>
   <meta name="description" content="收錄環境部現行 208 筆有效 PCR 與 2025 雙範本解剖，提供零 Token 系統界限圖工作台與 AI 解析 Prompt 外帶。" />
+
+  <!-- 中央共用 3D 旋轉回航徽章 -->
+  <script src="https://hao-element-matrix.pages.dev/badge.js" defer></script>
 
   <!-- Google Fonts: Noto Sans TC & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -37,87 +40,185 @@
 </head>
 <body class="min-h-screen flex flex-col bg-[#f4f7f6] text-slate-900 selection:bg-teal-100 selection:text-teal-900">
 
-  <!-- 頂部導覽列（明亮白底＋環保青綠點綴，一排完整顯示不溢出） -->
-  <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-wrap lg:flex-nowrap items-center justify-between py-2.5 gap-3">
-        
-        <!-- 左側品牌與元素徽章 [78 Pt] -->
-        <div class="flex items-center gap-3 min-w-0">
-          <a href="https://hao-element-matrix.pages.dev/"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="element-badge"
-             title="返回晧脈元素庫 [78 Pt 鉑] PCR 規則"
-             aria-label="返回晧脈元素庫">
-            <span class="element-num">78</span>
-            <span class="element-symbol">Pt</span>
-            <span class="element-name">Platinum</span>
-          </a>
-          <div class="min-w-0">
-            <div class="flex items-center gap-2 flex-wrap">
-              <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight truncate">CFP-PCR 規則學習與解析中心</h1>
-              <span class="hidden sm:inline-block text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200">BYO-AI 零 Token 閉環</span>
+  <!-- 頂部雙層旗艦 Banner + 主分頁導覽列 -->
+  <header class="pt-4 pb-2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-3">
+
+      <!-- 旗艦卡片：左雙層 + 右 280px 動畫欄 -->
+      <div class="flagship-banner rounded-2xl p-4 sm:p-5 flex items-stretch gap-5">
+
+        <!-- 左主欄（雙層結構） -->
+        <div class="flex-1 min-w-0 flex flex-col justify-between gap-4">
+
+          <!-- 第一層：品牌識別層（嚴禁重複膠囊標籤） -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 min-w-0">
+            <div class="flex items-center gap-3.5 min-w-0">
+              <div class="element-badge" aria-label="15 P Phosphorus 磷元素">
+                <span class="element-num">15</span>
+                <span class="element-symbol">P</span>
+                <span class="element-name">Phosphorus</span>
+              </div>
+              <div class="min-w-0">
+                <h1 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">
+                  CFP-PCR 規則學習與解析中心
+                </h1>
+                <p class="text-xs sm:text-sm text-slate-600 mt-0.5 leading-snug">
+                  ISO 14067 產品碳足跡規則庫・2025 雙範本解剖・零 Token 系統界限圖工作台
+                </p>
+              </div>
             </div>
-            <p class="text-xs text-slate-500 truncate">晧脈元素庫 · 環境部 494 筆 PCR 檢索與 2025 雙範本解剖</p>
           </div>
+
+          <!-- 第二層：KPI 數據與導覽回航層 -->
+          <div class="space-y-2.5 pt-3 border-t border-emerald-100/90">
+            <!-- 4 張精簡 KPI 數據卡（滿寬 4 欄，桌機版不擠壓） -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
+              <div class="bg-slate-50/90 border border-emerald-200/80 rounded-xl px-3 py-2">
+                <div class="text-[11px] font-medium text-slate-500 whitespace-nowrap">現行有效 PCR</div>
+                <div class="flex items-baseline justify-between gap-1 mt-0.5 flex-wrap">
+                  <span id="kpi-active-count" class="text-base font-bold font-mono text-teal-800 whitespace-nowrap">208 筆</span>
+                  <span id="kpi-total-count" class="text-[11px] text-slate-500 font-mono whitespace-nowrap">總收錄 494 筆</span>
+                </div>
+              </div>
+
+              <div class="bg-slate-50/90 border border-emerald-200/80 rounded-xl px-3 py-2">
+                <div class="text-[11px] font-medium text-slate-500 whitespace-nowrap">CFP-PCR / EPD / PEF</div>
+                <div id="kpi-type-split" class="text-base font-bold font-mono text-slate-800 mt-0.5 whitespace-nowrap">
+                  159 / 34 / 15
+                </div>
+              </div>
+
+              <div class="bg-slate-50/90 border border-emerald-200/80 rounded-xl px-3 py-2">
+                <div class="text-[11px] font-medium text-slate-500 whitespace-nowrap">商品 / 服務雙軌</div>
+                <div id="kpi-cat-split" class="text-base font-bold font-mono text-slate-800 mt-0.5 whitespace-nowrap">
+                  156 / 44 筆
+                </div>
+              </div>
+
+              <div class="bg-slate-50/90 border border-emerald-200/80 rounded-xl px-3 py-2">
+                <div class="text-[11px] font-medium text-slate-500 whitespace-nowrap">資料基準日</div>
+                <div class="flex items-baseline justify-between gap-1 mt-0.5 flex-wrap">
+                  <span id="kpi-generated-at" class="text-sm font-bold font-mono text-slate-800 whitespace-nowrap">2026-11-21</span>
+                  <button type="button" id="kpi-btn-expiring" class="text-[11px] font-semibold text-amber-700 hover:underline whitespace-nowrap" title="點擊篩選即將到期項目">
+                    即將到期 <span id="kpi-expiring-count">2</span> 筆
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 次要功能鍵 + 唯一中央共用 3D 旋轉回航徽章 -->
+            <div class="flex items-center justify-between sm:justify-end gap-2.5">
+              <button type="button" id="btn-open-guide-modal"
+                      class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 transition whitespace-nowrap">
+                <span>找不到適用 PCR？</span>
+              </button>
+
+              <hao-element-badge symbol="P" theme="light"></hao-element-badge>
+            </div>
+          </div>
+
         </div>
 
-        <!-- 中間四大核心分頁導覽（精簡標籤：桌機版一排完整顯示不截斷） -->
-        <nav class="order-3 lg:order-2 w-full lg:w-auto flex items-center justify-start lg:justify-center gap-1 overflow-x-auto lg:overflow-visible pt-1 lg:pt-0 border-t lg:border-t-0 border-slate-100" aria-label="主要功能分頁">
-          <button type="button" data-tab="explorer"
-                  class="nav-tab active px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
-            <span>🔍</span>
-            <span>1. PCR 檢索庫</span>
-          </button>
-          <button type="button" data-tab="anatomy"
-                  class="nav-tab px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
-            <span>🧬</span>
-            <span>2. 讀懂 PCR</span>
-          </button>
-          <button type="button" data-tab="prompt"
-                  class="nav-tab px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
-            <span>⚡</span>
-            <span>3. 解析工作台</span>
-          </button>
-          <button type="button" data-tab="mermaid"
-                  class="nav-tab px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
-            <span>📐</span>
-            <span>4. 生命週期圖</span>
-          </button>
-        </nav>
+        <!-- 右側動畫區（橫跨一、二層，桌機版 280px、小螢幕自動隱藏） -->
+        <aside class="hidden lg:flex lca-stage-card shrink-0 flex-col justify-between p-3.5" aria-hidden="true">
+          <div class="flex items-center justify-between">
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold tracking-wider bg-white/90 text-teal-800 border border-teal-200 shadow-sm">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              <span>LIVE LCA</span>
+            </span>
+            <span class="text-[10px] font-mono text-teal-800/80 font-semibold">ISO 14067 界限</span>
+          </div>
 
-        <!-- 右側次要按鈕：「找不到適用 PCR？」與「晧脈元素庫 ↗」並列同一行 -->
-        <div class="order-2 lg:order-3 flex items-center gap-2 shrink-0">
-          <button type="button" id="btn-open-guide-modal"
-                  class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 transition whitespace-nowrap shadow-sm">
-            <span>🧭</span>
-            <span>找不到適用 PCR？</span>
-          </button>
+          <!-- 生命週期五階段能量環流 SVG -->
+          <svg viewBox="0 0 252 108" class="w-full h-auto my-1" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 系統界限外框（實線＋虛線軌道） -->
+            <rect x="6" y="10" width="240" height="88" rx="12" stroke="#0f766e" stroke-opacity="0.25" stroke-width="1.2" stroke-dasharray="4 3" />
 
-          <a href="https://hao-element-matrix.pages.dev/" target="_blank" rel="noopener noreferrer"
-             class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 shadow-sm transition whitespace-nowrap"
-             title="返回晧脈元素庫 · Hao Element Matrix">
-            <span class="w-1.5 h-1.5 rounded-full bg-teal-600"></span>
-            <span>晧脈元素庫 ↗</span>
-          </a>
-        </div>
+            <!-- 實線流程：原料 -> 製造 -> 配送 (S1->S2->S3) -->
+            <path id="lca-path-12" d="M 38 42 L 78 42" stroke="#0f766e" stroke-width="2" class="lca-flow-solid" />
+            <path id="lca-path-23" d="M 96 42 L 136 42" stroke="#0f766e" stroke-width="2" class="lca-flow-solid" />
+            <!-- 虛線鐵律：配送 -.-> 使用 (S3-.->S4，禁寫運輸) -->
+            <path id="lca-path-34" d="M 154 42 L 194 42" stroke="#d97706" stroke-width="2" class="lca-flow-dashed" />
+            <!-- 實線回流：使用 -> 廢棄 -> 循環回收 (S4->S5->S1) -->
+            <path id="lca-path-45" d="M 212 52 C 218 76, 178 82, 134 82" stroke="#0f766e" stroke-width="1.8" class="lca-flow-solid" />
+            <path id="lca-path-51" d="M 114 82 C 66 82, 26 76, 28 52" stroke="#0f766e" stroke-width="1.6" stroke-dasharray="3 3" opacity="0.65" />
+
+            <!-- 暖金流動光點 -->
+            <circle r="3" fill="#d97706" class="lca-orbit-dot">
+              <animateMotion dur="4.2s" repeatCount="indefinite" path="M 28 42 L 145 42 L 210 42 C 215 78, 175 82, 124 82 C 70 82, 28 78, 28 42 Z" />
+            </circle>
+
+            <!-- 五階段節點 -->
+            <!-- 1. 原料 -->
+            <g>
+              <circle cx="28" cy="42" r="12" fill="#ffffff" stroke="#0f766e" stroke-width="2" />
+              <text x="28" y="45" text-anchor="middle" font-size="8.5" font-weight="700" fill="#115e59">原料</text>
+            </g>
+            <!-- 2. 製造 -->
+            <g>
+              <circle cx="87" cy="42" r="13" fill="#0f766e" class="lca-node-pulse" opacity="0.18" />
+              <circle cx="87" cy="42" r="12" fill="#0f766e" />
+              <text x="87" y="45" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ffffff">製造</text>
+            </g>
+            <!-- 3. 配送 -->
+            <g>
+              <circle cx="145" cy="42" r="12" fill="#ffffff" stroke="#0f766e" stroke-width="2" />
+              <text x="145" y="45" text-anchor="middle" font-size="8.5" font-weight="700" fill="#115e59">配送</text>
+            </g>
+            <!-- 4. 使用 (虛線框代表條件納入) -->
+            <g>
+              <circle cx="204" cy="42" r="12" fill="#fffbeb" stroke="#d97706" stroke-width="1.8" stroke-dasharray="3 2" />
+              <text x="204" y="45" text-anchor="middle" font-size="8.5" font-weight="700" fill="#b45309">使用</text>
+            </g>
+            <!-- 5. 廢棄 -->
+            <g>
+              <rect x="85" y="71" width="78" height="20" rx="10" fill="#ffffff" stroke="#0f766e" stroke-width="1.8" />
+              <text x="124" y="84" text-anchor="middle" font-size="8" font-weight="700" fill="#115e59">焚化/掩埋/回收</text>
+            </g>
+          </svg>
+
+          <div class="flex items-center justify-between text-[10px] text-slate-600 font-medium pt-0.5">
+            <span>━ 強制納入</span>
+            <span class="text-amber-800">┅ 條件納入 / 虛線無運輸</span>
+          </div>
+        </aside>
 
       </div>
+
+      <!-- Banner 下方：單排清爽主分頁導覽列 -->
+      <nav class="flex items-center gap-1.5 overflow-x-auto lg:overflow-visible pb-1" aria-label="主要功能分頁">
+        <button type="button" data-tab="explorer"
+                class="nav-tab active px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
+          <span>🔍</span>
+          <span>1. PCR 檢索庫</span>
+        </button>
+        <button type="button" data-tab="anatomy"
+                class="nav-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
+          <span>🧬</span>
+          <span>2. 讀懂 PCR</span>
+        </button>
+        <button type="button" data-tab="prompt"
+                class="nav-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
+          <span>⚡</span>
+          <span>3. 解析工作台</span>
+        </button>
+        <button type="button" data-tab="mermaid"
+                class="nav-tab px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
+          <span>📐</span>
+          <span>4. 生命週期圖</span>
+        </button>
+      </nav>
+
     </div>
   </header>
 
   <!-- 主內容區 -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-4">
 
     <!-- ==========================================
          分頁 1：全量 PCR 智慧檢索庫 (js/pcr-explorer.js)
          ========================================== -->
-    <section id="tab-explorer" class="tab-panel space-y-6">
-      <!-- 置頂統計儀表卡 -->
-      <div id="explorer-stats-bar" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <!-- 由 pcr-explorer.js 動態渲染 -->
-      </div>
+    <section id="tab-explorer" class="tab-panel space-y-5">
 
       <!-- 搜尋與多維篩選控制台 -->
       <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
@@ -683,29 +784,19 @@
 
   </main>
 
-  <!-- 頁尾與回航徽章 -->
+  <!-- 頁尾 -->
   <footer class="border-t border-slate-200 bg-white mt-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
-      <div class="space-y-1 text-center sm:text-left">
-        <div class="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
-          <span class="font-mono font-bold px-1.5 py-0.5 rounded bg-teal-50 text-teal-800 border border-teal-200">[78 Pt]</span>
-          <span class="font-bold text-slate-800">CFP-PCR 規則學習與解析中心</span>
-          <span>｜</span>
-          <span>隸屬 <a href="https://hao-element-matrix.pages.dev/" target="_blank" rel="noopener noreferrer" class="font-bold text-teal-800 hover:underline">晧脈元素庫 · Hao Element Matrix</a></span>
-        </div>
-        <p>
-          官方資料來源：<a href="https://cfp.moenv.gov.tw/Carbon/WebPage/FLPCRDoneList.aspx" target="_blank" rel="noopener noreferrer" class="text-teal-700 font-medium hover:underline">環境部產品碳足跡資訊網 CFP-PCR 專區 ↗</a>
-          （本平台採全靜態 BYO-AI 架構，不鏡像託管原檔以確保版本即時）
-        </p>
+      <div class="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+        <span class="font-mono font-bold px-1.5 py-0.5 rounded bg-teal-50 text-teal-800 border border-teal-200">[15 P]</span>
+        <span class="font-bold text-slate-800">CFP-PCR 規則學習與解析中心</span>
+        <span>｜</span>
+        <span>晧脈元素庫 · Hao Element Matrix</span>
       </div>
-
-      <div class="flex items-center gap-3">
-        <a href="https://hao-element-matrix.pages.dev/" target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 transition">
-          <span>✦ 返回晧脈元素庫</span>
-          <span>↗</span>
-        </a>
-      </div>
+      <p class="text-center sm:text-right">
+        官方資料來源：<a href="https://cfp.moenv.gov.tw/Carbon/WebPage/FLPCRDoneList.aspx" target="_blank" rel="noopener noreferrer" class="text-teal-700 font-medium hover:underline">環境部產品碳足跡資訊網 CFP-PCR 專區 ↗</a>
+        （全靜態 BYO-AI 架構，不鏡像託管原檔）
+      </p>
     </div>
   </footer>
 

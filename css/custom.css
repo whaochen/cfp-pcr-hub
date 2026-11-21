@@ -1,4 +1,4 @@
-/* cfp-pcr-hub — 延續 cfp-query-web 明亮清新環保綠系設計系統 */
+/* cfp-pcr-hub — 延續 cfp-query-web 明亮清新環保綠系設計系統 + 雙層旗艦 Banner */
 
 :root {
   --bg: #f4f7f6;
@@ -13,14 +13,8 @@
   --primary-hover: #0d5e58;
   --primary-soft: #ccfbf1;
   --primary-text: #115e59;
-  --success: #15803d;
-  --success-bg: #dcfce7;
-  --warning: #b45309;
-  --warning-bg: #fef3c7;
-  --danger: #b91c1c;
-  --danger-bg: #fee2e2;
   --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 14px rgba(15, 118, 110, 0.08);
   --radius: 12px;
   --radius-sm: 8px;
 }
@@ -49,15 +43,22 @@ body {
   background: #94a3b8;
 }
 
-/* 左上角元素方塊 (78 Pt) */
+/* 旗艦 Banner 容器 */
+.flagship-banner {
+  background: linear-gradient(135deg, #ffffff 0%, #f5fbf9 60%, #edf7f4 100%);
+  border: 1px solid #cce7df;
+  box-shadow: var(--shadow-md);
+}
+
+/* 左側第一層元素方塊 (15 P Phosphorus) */
 .element-badge {
   position: relative;
-  width: 50px;
-  height: 50px;
-  border-radius: 10px;
-  background: linear-gradient(145deg, #0f766e, #115e59);
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #0f766e, #0d5e58);
   border: 1px solid #14b8a6;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 3px 10px rgba(15, 118, 110, 0.22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 4px 12px rgba(15, 118, 110, 0.22);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,37 +67,84 @@ body {
   color: #ffffff;
   font-family: 'JetBrains Mono', monospace;
   line-height: 1;
-  text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-.element-badge:hover {
-  transform: translateY(-1px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 14px rgba(15, 118, 110, 0.32);
 }
 .element-num {
   position: absolute;
-  top: 4px;
+  top: 5px;
   left: 6px;
-  font-size: 0.62rem;
-  font-weight: 600;
+  font-size: 0.65rem;
+  font-weight: 700;
   color: #99f6e4;
 }
 .element-symbol {
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-top: 5px;
+  margin-top: 6px;
   color: #ffffff;
 }
 .element-name {
-  font-size: 0.50rem;
+  font-size: 0.48rem;
   font-weight: 500;
   letter-spacing: 0.02em;
   color: #ccfbf1;
   margin-top: 2px;
 }
 
-/* 導覽分頁按鈕狀態（比照 cfp-query-web 明亮綠系） */
+/* 右側微動畫舞台 (LIVE LCA) */
+.lca-stage-card {
+  width: 280px;
+  background: linear-gradient(160deg, #f7fcfa 0%, #eaf6f2 100%);
+  border: 1px solid #bfe3d8;
+  border-radius: 14px;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes lcaDashFlow {
+  to {
+    stroke-dashoffset: -28;
+  }
+}
+
+@keyframes lcaPulseRing {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+}
+
+.lca-flow-solid {
+  stroke-dasharray: 10 4;
+  animation: lcaDashFlow 2.2s linear infinite;
+}
+
+.lca-flow-dashed {
+  stroke-dasharray: 5 5;
+  animation: lcaDashFlow 2.8s linear infinite;
+}
+
+.lca-node-pulse {
+  transform-origin: center;
+  animation: lcaPulseRing 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lca-flow-solid,
+  .lca-flow-dashed,
+  .lca-node-pulse {
+    animation: none !important;
+  }
+  .lca-orbit-dot {
+    display: none;
+  }
+}
+
+/* 導覽分頁按鈕狀態（Banner 下方清爽單排分頁列） */
 .nav-tab {
   position: relative;
   transition: all 0.18s ease;
@@ -110,10 +158,10 @@ body {
 }
 .nav-tab.active {
   color: #0f766e;
-  background: #f0fdfa;
+  background: #ffffff;
   border-color: #99f6e4;
   font-weight: 700;
-  box-shadow: 0 1px 2px rgba(15, 118, 110, 0.08);
+  box-shadow: 0 2px 6px rgba(15, 118, 110, 0.1);
 }
 
 /* 篩選晶片 Chips（明亮綠系） */
