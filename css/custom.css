@@ -1,0 +1,191 @@
+/* cfp-pcr-hub — 延續 cfp-query-web 明亮清新環保綠系設計系統 */
+
+:root {
+  --bg: #f4f7f6;
+  --surface: #ffffff;
+  --surface-subtle: #f8fafc;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --text: #0f172a;
+  --text-muted: #475569;
+  --text-light: #64748b;
+  --primary: #0f766e;
+  --primary-hover: #0d5e58;
+  --primary-soft: #ccfbf1;
+  --primary-text: #115e59;
+  --success: #15803d;
+  --success-bg: #dcfce7;
+  --warning: #b45309;
+  --warning-bg: #fef3c7;
+  --danger: #b91c1c;
+  --danger-bg: #fee2e2;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+body {
+  font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 捲軸美化（明亮版） */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* 左上角元素方塊 (78 Pt) */
+.element-badge {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #0f766e, #115e59);
+  border: 1px solid #14b8a6;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 3px 10px rgba(15, 118, 110, 0.22);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.element-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 6px 14px rgba(15, 118, 110, 0.32);
+}
+.element-num {
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: #99f6e4;
+}
+.element-symbol {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 5px;
+  color: #ffffff;
+}
+.element-name {
+  font-size: 0.50rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #ccfbf1;
+  margin-top: 2px;
+}
+
+/* 導覽分頁按鈕狀態（比照 cfp-query-web 明亮綠系） */
+.nav-tab {
+  position: relative;
+  transition: all 0.18s ease;
+  color: #475569;
+  background: transparent;
+  border: 1px solid transparent;
+}
+.nav-tab:hover {
+  color: #0f766e;
+  background: #f0fdfa;
+}
+.nav-tab.active {
+  color: #0f766e;
+  background: #f0fdfa;
+  border-color: #99f6e4;
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(15, 118, 110, 0.08);
+}
+
+/* 篩選晶片 Chips（明亮綠系） */
+.filter-chip {
+  transition: all 0.15s ease;
+  cursor: pointer;
+  user-select: none;
+}
+.filter-chip:hover {
+  border-color: #0f766e;
+  color: #0f766e;
+  background-color: #f0fdfa;
+}
+.filter-chip.active {
+  background-color: #ccfbf1;
+  color: #115e59;
+  border-color: #0f766e;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(15, 118, 110, 0.12);
+}
+
+/* 卡片懸停效果（純白卡片＋清爽陰影） */
+.pcr-card {
+  background-color: #ffffff;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.pcr-card:hover {
+  transform: translateY(-2px);
+  border-color: #0f766e;
+  box-shadow: 0 10px 22px -5px rgba(15, 23, 42, 0.1), 0 0 0 1px rgba(15, 118, 110, 0.15);
+}
+
+/* Mermaid 預覽畫布容器 */
+.mermaid-canvas-wrap {
+  background-color: #ffffff;
+  background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+  background-size: 16px 16px;
+  color: #0f172a;
+  min-height: 430px;
+}
+
+.mermaid-canvas-wrap svg {
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+/* 自訂滑桿樣式（明亮版） */
+input[type="range"].custom-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  outline: none;
+}
+input[type="range"].custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #0f766e;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(15, 118, 110, 0.35);
+}
+
+/* 彈窗遮罩 */
+.modal-backdrop {
+  backdrop-filter: blur(4px);
+  background-color: rgba(15, 23, 42, 0.5);
+}

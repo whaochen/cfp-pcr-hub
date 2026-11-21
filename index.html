@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>[78 Pt] CFP-PCR 規則學習與解析中心｜晧脈元素庫 · Hao Element Matrix</title>
+  <meta name="description" content="收錄環境部現行 208 筆有效 PCR 與 2025 雙範本解剖，提供零 Token 系統界限圖工作台與 AI 解析 Prompt 外帶。" />
+
+  <!-- Google Fonts: Noto Sans TC & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace']
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Fuse.js (Fuzzy Search) -->
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0"></script>
+
+  <!-- Mermaid.js (v10+ Pure Frontend Diagram Rendering) -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="./css/custom.css" />
+</head>
+<body class="min-h-screen flex flex-col bg-[#f4f7f6] text-slate-900 selection:bg-teal-100 selection:text-teal-900">
+
+  <!-- 頂部導覽列（明亮白底＋環保青綠點綴，一排完整顯示不溢出） -->
+  <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/95 backdrop-blur-md shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-wrap lg:flex-nowrap items-center justify-between py-2.5 gap-3">
+        
+        <!-- 左側品牌與元素徽章 [78 Pt] -->
+        <div class="flex items-center gap-3 min-w-0">
+          <a href="https://hao-element-matrix.pages.dev/"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="element-badge"
+             title="返回晧脈元素庫 [78 Pt 鉑] PCR 規則"
+             aria-label="返回晧脈元素庫">
+            <span class="element-num">78</span>
+            <span class="element-symbol">Pt</span>
+            <span class="element-name">Platinum</span>
+          </a>
+          <div class="min-w-0">
+            <div class="flex items-center gap-2 flex-wrap">
+              <h1 class="text-base sm:text-lg font-bold text-slate-900 tracking-tight truncate">CFP-PCR 規則學習與解析中心</h1>
+              <span class="hidden sm:inline-block text-[11px] font-mono font-semibold px-2 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200">BYO-AI 零 Token 閉環</span>
+            </div>
+            <p class="text-xs text-slate-500 truncate">晧脈元素庫 · 環境部 494 筆 PCR 檢索與 2025 雙範本解剖</p>
+          </div>
+        </div>
+
+        <!-- 中間四大核心分頁導覽（精簡標籤：桌機版一排完整顯示不截斷） -->
+        <nav class="order-3 lg:order-2 w-full lg:w-auto flex items-center justify-start lg:justify-center gap-1 overflow-x-auto lg:overflow-visible pt-1 lg:pt-0 border-t lg:border-t-0 border-slate-100" aria-label="主要功能分頁">
+          <button type="button" data-tab="explorer"
+                  class="nav-tab active px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
+            <span>🔍</span>
+            <span>1. PCR 檢索庫</span>
+          </button>
+          <button type="button" data-tab="anatomy"
+                  class="nav-tab px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
+            <span>🧬</span>
+            <span>2. 讀懂 PCR</span>
+          </button>
+          <button type="button" data-tab="prompt"
+                  class="nav-tab px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
+            <span>⚡</span>
+            <span>3. 解析工作台</span>
+          </button>
+          <button type="button" data-tab="mermaid"
+                  class="nav-tab px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap flex items-center gap-1.5">
+            <span>📐</span>
+            <span>4. 生命週期圖</span>
+          </button>
+        </nav>
+
+        <!-- 右側次要按鈕：「找不到適用 PCR？」與「晧脈元素庫 ↗」並列同一行 -->
+        <div class="order-2 lg:order-3 flex items-center gap-2 shrink-0">
+          <button type="button" id="btn-open-guide-modal"
+                  class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 transition whitespace-nowrap shadow-sm">
+            <span>🧭</span>
+            <span>找不到適用 PCR？</span>
+          </button>
+
+          <a href="https://hao-element-matrix.pages.dev/" target="_blank" rel="noopener noreferrer"
+             class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 shadow-sm transition whitespace-nowrap"
+             title="返回晧脈元素庫 · Hao Element Matrix">
+            <span class="w-1.5 h-1.5 rounded-full bg-teal-600"></span>
+            <span>晧脈元素庫 ↗</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- 主內容區 -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ==========================================
+         分頁 1：全量 PCR 智慧檢索庫 (js/pcr-explorer.js)
+         ========================================== -->
+    <section id="tab-explorer" class="tab-panel space-y-6">
+      <!-- 置頂統計儀表卡 -->
+      <div id="explorer-stats-bar" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <!-- 由 pcr-explorer.js 動態渲染 -->
+      </div>
+
+      <!-- 搜尋與多維篩選控制台 -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
+        <!-- 搜尋框與歷史版切換 -->
+        <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+          <div class="relative flex-1">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400 pointer-events-none">🔎</span>
+            <input type="text" id="pcr-search-input"
+                   placeholder="搜尋產品/服務名稱、PCR 編號（如 25-022）、申請者、CCC Code（如 8714）或 4 碼行業碼（如 5510）..."
+                   class="w-full pl-10 pr-20 py-2.5 bg-white border border-slate-300 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 transition" />
+            <button type="button" id="pcr-search-clear"
+                    class="hidden absolute inset-y-0 right-2 my-auto h-7 px-2.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300">
+              清除
+            </button>
+          </div>
+
+          <!-- 狀態切換開關：預設只顯示現行有效 208 筆，可開啟含已過期 +286 筆 -->
+          <div class="flex items-center justify-between md:justify-end gap-3 bg-slate-50 border border-slate-200 px-3.5 py-2 rounded-xl">
+            <label for="toggle-include-expired" class="flex items-center gap-2.5 cursor-pointer select-none">
+              <input type="checkbox" id="toggle-include-expired" class="sr-only peer" />
+              <div class="w-9 h-5 bg-slate-300 rounded-full peer peer-checked:bg-teal-600 relative transition after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-4"></div>
+              <span class="text-xs font-semibold text-slate-700">
+                含已過期歷史版 <span class="text-slate-500 font-mono" id="expired-count-badge">(+286 筆)</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 多維篩選晶片列 -->
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pt-3 border-t border-slate-200">
+          <!-- 規則體系篩選 -->
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="text-xs text-slate-600 mr-1 font-semibold">規則體系：</span>
+            <button type="button" data-filter-type="all" class="filter-chip type-chip active px-2.5 py-1 rounded-lg text-xs border border-slate-300 bg-slate-50 text-slate-700">全部體系</button>
+            <button type="button" data-filter-type="環境部 CFP-PCR" class="filter-chip type-chip px-2.5 py-1 rounded-lg text-xs border border-slate-300 bg-slate-50 text-slate-700">環境部 CFP-PCR <span class="font-mono opacity-80">(159)</span></button>
+            <button type="button" data-filter-type="產發署 EPD-PCR" class="filter-chip type-chip px-2.5 py-1 rounded-lg text-xs border border-slate-300 bg-slate-50 text-slate-700">產發署 EPD-PCR <span class="font-mono opacity-80">(34)</span></button>
+            <button type="button" data-filter-type="環境部 PEFCR" class="filter-chip type-chip px-2.5 py-1 rounded-lg text-xs border border-slate-300 bg-slate-50 text-slate-700">環境部 PEFCR <span class="font-mono opacity-80">(15)</span></button>
+          </div>
+
+          <!-- 商品與服務分類篩選 -->
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="text-xs text-slate-600 mr-1 font-semibold">屬性分類：</span>
+            <button type="button" data-filter-cat="all" class="filter-chip cat-chip active px-2.5 py-1 rounded-lg text-xs border border-slate-300 bg-slate-50 text-slate-700">全部類型</button>
+            <button type="button" data-filter-cat="goods" class="filter-chip cat-chip px-2.5 py-1 rounded-lg text-xs border border-slate-300 bg-slate-50 text-slate-700">📦 商品型 (CCC Code)</button>
+            <button type="button" data-filter-cat="service" class="filter-chip cat-chip px-2.5 py-1 rounded-lg text-xs border border-slate-300 bg-slate-50 text-slate-700">🛎️ 服務型 (行業分類)</button>
+            <button type="button" data-filter-cat="other" class="filter-chip cat-chip px-2.5 py-1 rounded-lg text-xs border border-slate-300 bg-slate-50 text-slate-700">🧱 其他 / 通用</button>
+            <button type="button" data-filter-special="expiring" id="chip-special-expiring" class="filter-chip px-2.5 py-1 rounded-lg text-xs border border-orange-300 bg-orange-50 text-orange-800">⏰ 即將到期 (2)</button>
+            <button type="button" data-filter-special="dual" id="chip-special-dual" class="filter-chip px-2.5 py-1 rounded-lg text-xs border border-amber-300 bg-amber-50 text-amber-800">⚖️ 同名雙軌 (6)</button>
+          </div>
+        </div>
+
+        <!-- 熱門快速搜尋提示與結果計數 -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 text-xs text-slate-600">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            <span class="font-semibold text-slate-500">快速試搜：</span>
+            <button type="button" data-quick-query="8714" class="px-2.5 py-0.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-mono font-medium transition">8714 (自行車零件)</button>
+            <button type="button" data-quick-query="鞋靴" class="px-2.5 py-0.5 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 font-medium transition">鞋靴 (同名雙軌)</button>
+            <button type="button" data-quick-query="21-033" class="px-2.5 py-0.5 rounded-full bg-orange-50 hover:bg-orange-100 text-orange-800 border border-orange-300 font-mono font-medium transition">21-033 (即將到期)</button>
+            <button type="button" data-quick-query="醫療保健" class="px-2.5 py-0.5 rounded-full bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-300 font-medium transition">醫療保健服務</button>
+            <button type="button" data-quick-query="住宿服務" class="px-2.5 py-0.5 rounded-full bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-300 font-medium transition">住宿服務</button>
+          </div>
+          <div id="pcr-result-counter" class="font-semibold text-slate-700">
+            載入資料中...
+          </div>
+        </div>
+      </div>
+
+      <!-- PCR 卡片網格清單 -->
+      <div id="pcr-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- 由 pcr-explorer.js 動態渲染 -->
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         分頁 2：讀懂 PCR — 2025 雙範本互動解剖室 (js/template-anatomy.js)
+         ========================================== -->
+    <section id="tab-anatomy" class="tab-panel hidden space-y-8">
+      <!-- 頂部介紹與雙軌切換器 -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div class="space-y-1.5">
+            <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-teal-50 text-teal-800 border border-teal-200">
+              <span>環境部 2025 最新參考範本解剖</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-bold text-slate-900">讀懂 PCR：14 章結構 × ISO 14067 Excel 盤查白話翻譯</h2>
+            <p class="text-xs sm:text-sm text-slate-600">
+              看懂 PCR 條文規定只是第一步，更重要的是知道「每一章對應到公司的 ISO 14067 盤查 Excel 表要填什麼、查驗員會看哪張單據」。
+            </p>
+          </div>
+
+          <!-- 商品型 vs 服務型 雙軌切換按鈕 -->
+          <div class="inline-flex p-1.5 rounded-xl bg-slate-100 border border-slate-200 self-start lg:self-center shrink-0">
+            <button type="button" id="btn-track-goods" data-track="goods"
+                    class="anatomy-track-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-teal-700 text-white shadow-sm transition">
+              📦 商品型範本（2025 第五版）
+            </button>
+            <button type="button" id="btn-track-service" data-track="service"
+                    class="anatomy-track-btn px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold text-slate-600 hover:text-slate-900 transition">
+              🛎️ 服務型範本（2025 第三版）
+            </button>
+          </div>
+        </div>
+
+        <!-- 當前範本生命週期階段橫幅 -->
+        <div id="anatomy-stage-banner" class="mt-5 pt-4 border-t border-slate-200">
+          <!-- 由 template-anatomy.js 渲染 -->
+        </div>
+      </div>
+
+      <!-- 14 章雙欄解剖手風琴 -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-base sm:text-lg font-bold text-slate-900 flex items-center gap-2">
+            <span>📖</span>
+            <span>14 章條文規範 vs. ISO 14067 盤查表（Excel）實戰雙欄對照</span>
+          </h3>
+          <div class="flex items-center gap-2">
+            <button type="button" id="btn-expand-all-chapters" class="px-3 py-1 rounded-lg text-xs font-medium bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 shadow-sm">全部展開</button>
+            <button type="button" id="btn-collapse-all-chapters" class="px-3 py-1 rounded-lg text-xs font-medium bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 shadow-sm">全部收合</button>
+          </div>
+        </div>
+        <div id="anatomy-chapters-list" class="space-y-3">
+          <!-- 由 template-anatomy.js 渲染 14 章雙欄手風琴 -->
+        </div>
+      </div>
+
+      <!-- 三大新手避雷互動卡片 -->
+      <div class="space-y-6 pt-4">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 flex items-center gap-2">
+          <span>🛡️</span>
+          <span>三大新手避雷互動工具與對照卡</span>
+        </h3>
+
+        <!-- 避雷卡 3 (置頂高互動)：10% 上游一級數據門檻試算器（比照 cfp-query-web calculator-card 清新綠漸層） -->
+        <div class="bg-gradient-to-r from-teal-50/70 via-white to-white border border-teal-200 border-l-4 border-l-teal-700 rounded-2xl p-5 sm:p-6 shadow-sm">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 pb-4 border-b border-slate-200">
+            <div>
+              <span class="text-xs font-mono font-semibold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-teal-700 text-white">2025 範本第 10.2.2 節鐵律</span>
+              <h4 class="text-lg font-bold text-slate-900 mt-1.5">🧮 10% 上游一級數據門檻試算器（純前端即時檢核）</h4>
+              <p class="text-xs text-slate-600 mt-0.5">
+                依據 10.2.2 節規定：製造/服務階段須採一級數據；若該階段碳排佔比 <strong class="text-amber-700">低於基準總排放量 10%</strong>，必須向上游供應商追索一級數據，使一級數據涵蓋貢獻率合計達 10% 以上！
+              </p>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 flex-wrap">
+              <button type="button" data-calc-preset="assembly" class="px-2.5 py-1 rounded-lg text-xs font-medium bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300">載入範例：組裝廠 (製造僅 4%)</button>
+              <button type="button" data-calc-preset="process" class="px-2.5 py-1 rounded-lg text-xs font-medium bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300">載入範例：高耗能加工廠 (製造 25%)</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-5 items-center">
+            <!-- 左側滑桿與輸入區 -->
+            <div class="lg:col-span-7 space-y-4">
+              <!-- 輸入 1：本廠製造/服務階段排放量 -->
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
+                <div class="flex justify-between items-center text-xs sm:text-sm">
+                  <label for="calc-mfg-input" class="font-semibold text-slate-800">① 本廠製造／服務提供階段預估排放量（100% 一級數據）</label>
+                  <div class="flex items-center gap-1.5">
+                    <input type="number" id="calc-mfg-input" value="6" min="0" max="100000" step="0.5"
+                           class="w-24 px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-right font-mono text-sm font-semibold text-teal-800 focus:outline-none focus:border-teal-600" />
+                    <span class="text-xs text-slate-500 font-mono">kgCO2e</span>
+                  </div>
+                </div>
+                <input type="range" id="calc-mfg-slider" min="0" max="200" step="0.5" value="6" class="w-full custom-slider" />
+              </div>
+
+              <!-- 輸入 2：上游原料取得階段總排放量 -->
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
+                <div class="flex justify-between items-center text-xs sm:text-sm">
+                  <label for="calc-upstream-input" class="font-semibold text-slate-800">② 上游原料取得階段預估總排放量（BOM 原物料＋包材）</label>
+                  <div class="flex items-center gap-1.5">
+                    <input type="number" id="calc-upstream-input" value="94" min="0.1" max="100000" step="0.5"
+                           class="w-24 px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-right font-mono text-sm font-semibold text-sky-800 focus:outline-none focus:border-teal-600" />
+                    <span class="text-xs text-slate-500 font-mono">kgCO2e</span>
+                  </div>
+                </div>
+                <input type="range" id="calc-upstream-slider" min="1" max="500" step="0.5" value="94" class="w-full custom-slider" />
+              </div>
+
+              <!-- 輸入 3：下游配送/使用/廢棄階段預估排放量 (選填) -->
+              <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2">
+                <div class="flex justify-between items-center text-xs sm:text-sm">
+                  <label for="calc-downstream-input" class="font-semibold text-slate-800">③ 下游配送＋使用＋廢棄階段預估排放量（搖籃至大門可設 0）</label>
+                  <div class="flex items-center gap-1.5">
+                    <input type="number" id="calc-downstream-input" value="0" min="0" max="100000" step="0.5"
+                           class="w-24 px-2.5 py-1 bg-white border border-slate-300 rounded-lg text-right font-mono text-sm font-semibold text-slate-700 focus:outline-none focus:border-teal-600" />
+                    <span class="text-xs text-slate-500 font-mono">kgCO2e</span>
+                  </div>
+                </div>
+                <input type="range" id="calc-downstream-slider" min="0" max="300" step="0.5" value="0" class="w-full custom-slider" />
+              </div>
+            </div>
+
+            <!-- 右側即時判定結果面板 -->
+            <div id="calc-result-box" class="lg:col-span-5 rounded-2xl p-5 border transition-all">
+              <!-- 由 template-anatomy.js 即時計算渲染 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 避雷卡 1 & 避雷卡 2 雙欄並排 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- 避雷卡 1：三體系辨識卡 -->
+          <div id="pitfall-three-systems" class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+            <!-- 由 template-anatomy.js 渲染 -->
+          </div>
+
+          <!-- 避雷卡 2：2025 新版 vs 2020 舊版 PCR 判讀對照卡 -->
+          <div id="pitfall-version-comparison" class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+            <!-- 由 template-anatomy.js 渲染 -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         分頁 3：解析工作台 — 標竿範例 + 動態 Prompt / Skill (js/prompt-builder.js)
+         ========================================== -->
+    <section id="tab-prompt" class="tab-panel hidden space-y-8">
+      <!-- 區塊 A：精選 5 筆跨產業標竿 PCR 深度解析示範 -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm space-y-5">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div>
+            <span class="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200">零 Token 內建知識庫 · 5 大跨產業標竿範例</span>
+            <h2 class="text-xl font-bold text-slate-900 mt-1.5">🏆 解析完畢長怎樣？5 筆代表性標竿 PCR 跨部門資料蒐集清單</h2>
+            <p class="text-xs sm:text-sm text-slate-600">
+              涵蓋金屬機械、農產冷鏈、營建建材、觀光旅宿與醫院急診服務。點選任一標竿即可預覽「跨部門盤查資料蒐集清單（採購／廠務／物流／使用／廢棄五欄）」，或一鍵帶入下方生成器。
+            </p>
+          </div>
+        </div>
+
+        <!-- 5 筆標竿切換按鈕 -->
+        <div id="sample-analyses-tabs" class="flex items-center gap-2 flex-wrap pb-1">
+          <!-- 由 prompt-builder.js 渲染 -->
+        </div>
+
+        <!-- 選中之標竿深度解析內容 -->
+        <div id="sample-analysis-detail" class="bg-slate-50/70 border border-slate-200 rounded-xl p-4 sm:p-5">
+          <!-- 由 prompt-builder.js 渲染 -->
+        </div>
+      </div>
+
+      <!-- 區塊 B：小白版 — 動態 PCR 解析 Prompt 組裝表單 & 預覽 -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- 左欄：動態組裝表單 -->
+        <div class="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-mono font-semibold text-teal-700">BYO-AI 外帶組裝器</span>
+              <h3 class="text-lg font-bold text-slate-900">🛠️ 動態 PCR 解析 Prompt 組裝表單</h3>
+            </div>
+            <button type="button" id="btn-prompt-reset" class="text-xs font-medium text-slate-500 hover:text-teal-700 underline">重設表單</button>
+          </div>
+
+          <div class="space-y-3 text-xs sm:text-sm">
+            <div class="grid grid-cols-3 gap-2.5">
+              <div class="col-span-1">
+                <label class="block text-xs font-medium text-slate-600 mb-1">PCR 登錄編號</label>
+                <input type="text" id="pb-pcr-no" value="25-022" placeholder="如 25-022"
+                       class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 font-mono text-xs focus:border-teal-600 focus:outline-none" />
+              </div>
+              <div class="col-span-2">
+                <label class="block text-xs font-medium text-slate-600 mb-1">PCR 文件名稱（或國外 PCR 名稱）</label>
+                <input type="text" id="pb-pcr-name" value="曲柄齒盤組" placeholder="輸入產品或服務類別名稱"
+                       class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 text-xs focus:border-teal-600 focus:outline-none" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5">
+              <div>
+                <label class="block text-xs font-medium text-slate-600 mb-1">規則體系與範本類型</label>
+                <select id="pb-pcr-category" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 text-xs focus:border-teal-600 focus:outline-none">
+                  <option value="goods">📦 商品型（5 大階段 + CCC Code）</option>
+                  <option value="service">🛎️ 服務型（3 大階段 + 行業 4 碼）</option>
+                  <option value="other">🧱 建材／其他通用型</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-600 mb-1">CCC Code / 行業分類碼</label>
+                <input type="text" id="pb-pcr-codes" value="8714.96" placeholder="如 8714.96 或 5510"
+                       class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 font-mono text-xs focus:border-teal-600 focus:outline-none" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-slate-600 mb-1">貴司實際產品／服務補充描述（選填，讓 AI 針對貴司製程客製）</label>
+              <input type="text" id="pb-company-context" placeholder="例如：本廠為鋁合金鍛造＋CNC加工，陽極處理委外；預計申請環境部碳標籤"
+                     class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-900 text-xs focus:border-teal-600 focus:outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-slate-600 mb-1">官方適用範圍摘要（由檢索庫自動帶入或手動貼上）</label>
+              <textarea id="pb-pcr-scope" rows="3"
+                        class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg text-slate-800 text-xs focus:border-teal-600 focus:outline-none">本項文件係供使用於曲柄齒盤組(Crankset)的碳足跡產品類別規則(CFP-PCR)，產品適用範圍包括各種經曲柄組驅動之自行車、獨輪車、電動輔助自行車、健身車等。對應 CCC Code：8714.96.20 曲柄齒輪及其零件。</textarea>
+            </div>
+
+            <!-- 勾選輸出目標 -->
+            <div class="pt-2 space-y-2">
+              <span class="block text-xs font-bold text-slate-700">勾選希望 AI 產出的解析模組：</span>
+              <label class="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:border-teal-500">
+                <input type="checkbox" id="pb-goal-1" checked class="mt-0.5 rounded text-teal-700 focus:ring-0" />
+                <span class="text-xs text-slate-800">
+                  <strong>① 10 分鐘白話導讀與關鍵陷阱</strong>（功能單位、系統界限排除項、新舊版差異、分配與切斷規則）
+                </span>
+              </label>
+              <label class="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:border-teal-500">
+                <input type="checkbox" id="pb-goal-2" checked class="mt-0.5 rounded text-teal-700 focus:ring-0" />
+                <span class="text-xs text-slate-800">
+                  <strong>② 跨部門盤查資料蒐集清單</strong>（採購/廠務/物流/使用/廢棄五欄 Markdown 表格，可直接貼進 Excel）
+                </span>
+              </label>
+              <label class="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer hover:border-teal-500">
+                <input type="checkbox" id="pb-goal-3" checked class="mt-0.5 rounded text-teal-700 focus:ring-0" />
+                <span class="text-xs text-slate-800">
+                  <strong>③ 一級數據 10% 門檻與情境公式拆解</strong>（10.2.2 節上游供應商追索熱點預測 ＋ 第 10.3 節預設公式摘錄）
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右欄：即時生成之結構化 Prompt 與 3 步驟教學 -->
+        <div class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <!-- 3 步驟操作圖解 -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-teal-50/60 border border-teal-200 rounded-xl p-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-full bg-teal-700 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">1</span>
+                <div class="text-xs">
+                  <div class="font-bold text-slate-800">官網下載 PCR PDF</div>
+                  <a href="https://cfp.moenv.gov.tw/Carbon/WebPage/FLPCRDoneList.aspx" target="_blank" rel="noopener noreferrer" class="text-teal-700 font-medium hover:underline">前往環境部專區 ↗</a>
+                </div>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-full bg-teal-700 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">2</span>
+                <div class="text-xs">
+                  <div class="font-bold text-slate-800">拖進個人 AI 對話框</div>
+                  <div class="text-slate-600">ChatGPT / Gemini / Claude</div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <span class="w-6 h-6 rounded-full bg-teal-700 text-white font-mono text-xs font-bold flex items-center justify-center shrink-0">3</span>
+                <div class="text-xs">
+                  <div class="font-bold text-slate-800">貼上下方組裝 Prompt</div>
+                  <div class="text-slate-600">秒獲 Excel 盤查清單</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-600">即時動態組裝結果（已內嵌環境部 2025 範本查驗規範）：</span>
+              <button type="button" id="btn-copy-analysis-prompt"
+                      class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold bg-teal-700 hover:bg-teal-800 text-white shadow-sm transition">
+                <span>📋 一鍵複製 Prompt</span>
+              </button>
+            </div>
+
+            <textarea id="pb-generated-prompt" readonly rows="16"
+                      class="w-full p-3.5 bg-slate-50 border border-slate-300 rounded-xl font-mono text-xs text-slate-800 leading-relaxed focus:outline-none"></textarea>
+          </div>
+
+          <div class="flex items-center justify-between pt-2 border-t border-slate-200 text-xs text-slate-600">
+            <span>💡 還需要繪製報告書第 6.2 節的「生命週期系統界限圖」嗎？</span>
+            <button type="button" id="btn-jump-to-mermaid-from-pb" class="text-teal-700 hover:text-teal-900 font-semibold hover:underline">
+              帶此 PCR 前往「4. 生命週期圖」→
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 區塊 C：進階版 — Skill 下載區 -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <span class="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-800 border border-purple-200">顧問與重度 AI 玩家專用</span>
+            <h3 class="text-lg font-bold text-slate-900 mt-1">📦 進階版：外帶安裝個人 AI 工作流 Skill（`.skill.md`）</h3>
+            <p class="text-xs text-slate-600">
+              將標準化 Skill 檔案下載安裝至 Claude Projects、Cursor Rules、Antigravity Skills 或自訂 GPTs，日後只需丟入任何 PCR PDF 即可自動觸發主任查驗員級解析。
+            </p>
+          </div>
+          <div class="flex items-center gap-2 shrink-0 flex-wrap">
+            <button type="button" id="btn-preview-analyzer-skill"
+                    class="px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition">
+              👁️ 檢視 Skill 原始碼
+            </button>
+            <a href="./skills/pcr-analyzer.skill.md" download="pcr-analyzer.skill.md"
+               class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-teal-700 hover:bg-teal-800 text-white shadow-sm transition">
+              <span>⬇️ 下載 pcr-analyzer.skill.md</span>
+            </a>
+            <a href="./skills/lca-boundary-diagram.skill.md" download="lca-boundary-diagram.skill.md"
+               class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 transition">
+              <span>⬇️ 下載 lca-boundary-diagram.skill.md</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Skill 檢視折疊區 -->
+        <div id="skill-preview-container" class="hidden pt-3 border-t border-slate-200">
+          <pre id="skill-preview-code" class="p-4 bg-slate-50 border border-slate-300 rounded-xl font-mono text-xs text-slate-800 overflow-x-auto max-h-80"></pre>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==========================================
+         分頁 4：生命週期系統界限圖工作台 (js/mermaid-studio.js)
+         ========================================== -->
+    <section id="tab-mermaid" class="tab-panel hidden space-y-6">
+      <!-- 頂部 2025 範本 6.2 節 4 大繪圖鐵律橫幅 -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+          <div>
+            <span class="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200">2025 範本第 6.2 節強制規範 · 純前端零 Token 渲染匯出閉環</span>
+            <h2 class="text-xl font-bold text-slate-900 mt-1">📐 生命週期系統界限圖工作台（Prompt 生成 ＋ Mermaid 即時渲染匯出）</h2>
+            <p class="text-xs text-slate-600">
+              左欄一鍵生成內嵌「環境部 6.2 節四大繪圖鐵律」的 AI 繪圖 Prompt；將 AI 產出的 Mermaid 語法貼回右欄，即可執行合規紅線檢查並匯出 2x 高清 PNG / SVG 直接貼入碳足跡報告書。
+            </p>
+          </div>
+        </div>
+
+        <!-- 四大繪圖鐵律提示卡 -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+          <div class="p-3 rounded-xl bg-teal-50/60 border border-teal-200">
+            <div class="font-bold text-teal-900 mb-1">鐵律 1：實虛線圖例定義</div>
+            <p class="text-slate-700">必須包含圖例：實線框＝<code class="text-teal-900 font-semibold">強制性納入</code>；虛線框＝<code class="text-teal-900 font-semibold">若有此程序應納入計算</code>。</p>
+          </div>
+          <div class="p-3 rounded-xl bg-amber-50/70 border border-amber-200">
+            <div class="font-bold text-amber-900 mb-1">鐵律 2：配送→使用虛線禁令</div>
+            <p class="text-slate-700">商品型「配送銷售 → 使用階段」連線<strong class="text-amber-900">必為虛線</strong>，且<strong class="text-rose-700">嚴禁標註「運輸」字樣</strong>！</p>
+          </div>
+          <div class="p-3 rounded-xl bg-sky-50/70 border border-sky-200">
+            <div class="font-bold text-sky-900 mb-1">鐵律 3：廢棄三路徑必填</div>
+            <p class="text-slate-700">廢棄處理階段必須明確列出「<strong class="text-sky-900">焚化、掩埋、回收</strong>」三種處置路徑節點。</p>
+          </div>
+          <div class="p-3 rounded-xl bg-purple-50/70 border border-purple-200">
+            <div class="font-bold text-purple-900 mb-1">鐵律 4：第 3、5 章名稱對齊</div>
+            <p class="text-slate-700">製造／服務階段內部方塊名稱，須與 PCR 第 3 章（組成）及第 5 章（名詞定義）完全一致。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 左右雙欄工作台 -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- 左欄 (5 cols)：系統界限圖 Prompt 生成器 -->
+        <div class="lg:col-span-5 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col justify-between space-y-4">
+          <div class="space-y-3.5">
+            <div class="flex items-center justify-between">
+              <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+                <span>🤖</span>
+                <span>左欄：系統界限圖 Prompt 生成器</span>
+              </h3>
+              <span class="text-[11px] font-mono font-semibold text-teal-700">Step 1</span>
+            </div>
+
+            <!-- 選擇商品型 (5階段) 或 服務型 (3階段) -->
+            <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 border border-slate-200 rounded-xl">
+              <button type="button" id="ms-mode-goods" data-ms-mode="goods"
+                      class="ms-mode-btn py-2 px-3 rounded-lg text-xs font-semibold bg-teal-700 text-white shadow-sm transition">
+                📦 商品型（5 階段）
+              </button>
+              <button type="button" id="ms-mode-service" data-ms-mode="service"
+                      class="ms-mode-btn py-2 px-3 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-900 transition">
+                🛎️ 服務型（3 階段）
+              </button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+              <div class="col-span-1">
+                <label class="block text-xs font-medium text-slate-600 mb-1">PCR 編號</label>
+                <input type="text" id="ms-pcr-no" value="25-022"
+                       class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-900 focus:border-teal-600 focus:outline-none" />
+              </div>
+              <div class="col-span-2">
+                <label class="block text-xs font-medium text-slate-600 mb-1">產品／服務名稱</label>
+                <input type="text" id="ms-pcr-name" value="曲柄齒盤組"
+                       class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900 focus:border-teal-600 focus:outline-none" />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium text-slate-600 mb-1">選填：已知的第 3 章組件或第 5 章製程單元（留空則由 AI 從 PDF 自動擷取）</label>
+              <input type="text" id="ms-custom-processes" placeholder="例如：鍛造成型、熱處理、CNC切削、陽極表面處理、雷雕組裝、包裝"
+                     class="w-full px-2.5 py-1.5 bg-white border border-slate-300 rounded-lg text-xs text-slate-900 focus:border-teal-600 focus:outline-none" />
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+              <span class="text-xs font-medium text-slate-600">已強制內嵌 6.2 節 4 大繪圖鐵律：</span>
+              <button type="button" id="btn-copy-mermaid-prompt"
+                      class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-teal-700 hover:bg-teal-800 text-white shadow-sm transition">
+                📋 複製繪圖 Prompt
+              </button>
+            </div>
+
+            <textarea id="ms-generated-prompt" readonly rows="13"
+                      class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-mono text-xs text-slate-800 leading-relaxed focus:outline-none"></textarea>
+          </div>
+
+          <p class="text-[11px] text-slate-600 border-t border-slate-200 pt-2.5">
+            💡 將此 Prompt 與 PCR PDF 一起交給 AI，再把 AI 產出的 <code class="text-teal-800 font-semibold">flowchart LR</code> 語法貼到右欄即可渲染並匯出圖檔！
+          </p>
+        </div>
+
+        <!-- 右欄 (7 cols)：純前端 Mermaid 渲染、合規檢查與 PNG/SVG 匯出閉環 -->
+        <div class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <h3 class="text-base font-bold text-slate-900">🎨 右欄：Mermaid 即時渲染與高清圖檔匯出</h3>
+              <span class="text-[11px] font-mono font-semibold text-sky-700">Step 2 (零 Token)</span>
+            </div>
+
+            <!-- 內建標準範例快速切換按鈕 -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-xs font-medium text-slate-600">載入標準範例：</span>
+              <button type="button" id="btn-load-sample-goods"
+                      class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 transition">
+                📦 商品型標準範例 (5階段)
+              </button>
+              <button type="button" id="btn-load-sample-service"
+                      class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-300 transition">
+                🛎️ 服務型標準範例 (3階段)
+              </button>
+            </div>
+          </div>
+
+          <!-- Mermaid 語法編輯器 -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs">
+              <label for="ms-code-editor" class="text-slate-700 font-semibold">Mermaid 語法編輯區（可隨時修改節點文字，下方畫布自動更新）：</label>
+              <button type="button" id="btn-render-mermaid" class="text-teal-700 font-semibold hover:underline font-mono">↻ 立即重新渲染</button>
+            </div>
+            <textarea id="ms-code-editor" rows="8" spellcheck="false"
+                      class="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl font-mono text-xs text-slate-900 leading-relaxed focus:outline-none focus:border-teal-600"></textarea>
+          </div>
+
+          <!-- 純前端合規小檢查 (Regex Compliance Checker) -->
+          <div id="ms-compliance-panel" class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+            <!-- 由 mermaid-studio.js 動態檢核並顯示 4 大鐵律通過狀態 -->
+          </div>
+
+          <!-- 圖表匯出工具列 -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1">
+            <span class="text-xs font-medium text-slate-600">預覽畫布（白底印刷標準配色，可直接貼入報告書）：</span>
+            <div class="flex items-center gap-2">
+              <button type="button" id="btn-download-svg"
+                      class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 shadow-sm transition">
+                <span>⬇️ 下載 SVG 向量圖</span>
+              </button>
+              <button type="button" id="btn-download-png"
+                      class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-xs font-semibold bg-teal-700 hover:bg-teal-800 text-white shadow-sm transition">
+                <span>🖼️ 匯出高清 PNG（2x 解析度，貼入 Word/ODT）</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Mermaid 渲染畫布 -->
+          <div id="ms-preview-container" class="mermaid-canvas-wrap rounded-xl border border-slate-300 p-4 overflow-x-auto flex items-center justify-center">
+            <!-- 由 Mermaid.js 動態渲染 SVG -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 頁尾與回航徽章 -->
+  <footer class="border-t border-slate-200 bg-white mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
+      <div class="space-y-1 text-center sm:text-left">
+        <div class="flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+          <span class="font-mono font-bold px-1.5 py-0.5 rounded bg-teal-50 text-teal-800 border border-teal-200">[78 Pt]</span>
+          <span class="font-bold text-slate-800">CFP-PCR 規則學習與解析中心</span>
+          <span>｜</span>
+          <span>隸屬 <a href="https://hao-element-matrix.pages.dev/" target="_blank" rel="noopener noreferrer" class="font-bold text-teal-800 hover:underline">晧脈元素庫 · Hao Element Matrix</a></span>
+        </div>
+        <p>
+          官方資料來源：<a href="https://cfp.moenv.gov.tw/Carbon/WebPage/FLPCRDoneList.aspx" target="_blank" rel="noopener noreferrer" class="text-teal-700 font-medium hover:underline">環境部產品碳足跡資訊網 CFP-PCR 專區 ↗</a>
+          （本平台採全靜態 BYO-AI 架構，不鏡像託管原檔以確保版本即時）
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <a href="https://hao-element-matrix.pages.dev/" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-300 transition">
+          <span>✦ 返回晧脈元素庫</span>
+          <span>↗</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ==========================================
+       彈窗 1：PCR 詳情抽屜 / 彈窗 (Detail Modal)
+       ========================================== -->
+  <div id="pcr-detail-modal" class="fixed inset-0 z-50 hidden modal-backdrop flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl space-y-5 my-8 relative">
+      <!-- 內容由 pcr-explorer.js 動態填入 -->
+      <div id="pcr-detail-modal-body"></div>
+    </div>
+  </div>
+
+
+  <!-- ==========================================
+       彈窗 2：附錄 — 找不到適用 PCR？法定四階段流程引導 (js/guide-modal.js)
+       ========================================== -->
+  <div id="pcr-guide-modal" class="fixed inset-0 z-50 hidden modal-backdrop flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white border border-slate-200 rounded-2xl max-w-3xl w-full p-5 sm:p-6 shadow-2xl space-y-5 my-8 relative max-h-[90vh] overflow-y-auto">
+      <div id="pcr-guide-modal-body">
+        <!-- 由 guide-modal.js 渲染 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 通知元件 -->
+  <div id="app-toast" class="fixed bottom-5 right-5 z-50 hidden px-4 py-2.5 rounded-xl bg-teal-800 text-white text-xs sm:text-sm font-semibold shadow-xl border border-teal-600 transition-all">
+    已複製到剪貼簿！
+  </div>
+
+  <!-- 模組腳本載入 -->
+  <script src="./js/pcr-explorer.js"></script>
+  <script src="./js/template-anatomy.js"></script>
+  <script src="./js/prompt-builder.js"></script>
+  <script src="./js/mermaid-studio.js"></script>
+  <script src="./js/guide-modal.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
